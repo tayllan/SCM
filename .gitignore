@@ -1,5 +1,7 @@
 /vendor/
+/back-end/vendor/
 node_modules/
+/front-end/node-modules/
 npm-debug.log
 yarn-error.log
 
@@ -21,3 +23,6 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+
+/.idea
+/back-end/.idea
