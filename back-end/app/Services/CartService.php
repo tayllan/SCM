@@ -9,8 +9,8 @@ use Illuminate\Support\Collection;
 
 class CartService
 {
-    private $email_service;
-    private $user_service;
+    private EmailService $email_service;
+    private UserService $user_service;
 
     public function __construct(EmailService $email_service, UserService $user_service)
     {
@@ -88,26 +88,6 @@ class CartService
             $cart = Cart::find($cart_id);
             $cart->delete();
         }
-
-        return true;
-    }
-
-    public function checkout(int $cart_id): bool
-    {
-        if (!$cart_id) {
-            return false;
-        }
-
-        $cart = Cart::find($cart_id);
-        $user = $this->user_service->get_user($cart->user_id);
-
-        $from_address = env('MAIL_FROM_ADDRESS', 'contact@tayllan.com');
-        $from_name = env('MAIL_FROM_NAME', 'Tayllan');
-        $subject = 'Checkout complete';
-        $user_name = $user->name;
-        $user_email = $user->email;
-
-        $this->email_service->send_email($from_address, $from_name, $subject, $user_name, $user_email);
 
         return true;
     }

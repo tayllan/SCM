@@ -6,7 +6,7 @@ use App\Services\ProductService;
 
 class ProductController extends Controller
 {
-    private $product_service;
+    private ProductService $product_service;
 
     public function __construct(ProductService $product_service)
     {

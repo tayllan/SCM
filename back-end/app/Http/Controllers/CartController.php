@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Services\CartService;
-use App\Services\EmailService;
+use App\Services\CheckoutService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    private $cart_service;
+    private CartService $cart_service;
+    private CheckoutService $checkout_service;
 
-    public function __construct(CartService $cart_service)
+    public function __construct(CartService $cart_service, CheckoutService $checkout_service)
     {
         $this->cart_service = $cart_service;
+        $this->checkout_service = $checkout_service;
     }
 
     public function store(Request $request)
@@ -66,7 +68,7 @@ class CartController extends Controller
     {
         $cart_id = $request->input('cart_id');
 
-        $result = $this->cart_service->checkout($cart_id);
+        $result = $this->checkout_service->process_checkout($cart_id);
         if (!$result) {
             return response('Bad Request', 400);
         }
