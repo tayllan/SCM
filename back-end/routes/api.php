@@ -10,4 +10,5 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::post('/cart', [CartController::class, 'store']);
 Route::get('/cart/{id}', [CartController::class, 'show']);
 Route::delete('/item', [CartController::class, 'destroy']);
+Route::post('/item', [CartController::class, 'update']);
 Route::post('/checkout', [CartController::class, 'checkout']);

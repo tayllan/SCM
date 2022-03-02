@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use Illuminate\Http\Request;
@@ -22,11 +21,12 @@ class CartController extends Controller
     {
         $product_id = $request->input('product_id') ?? 0;
         $quantity = $request->input('quantity') ?? 0;
+        $user_id = $request->input('user_id') ?? 1;
         $cart_id = $request->input('cart_id');
 
-        $result = $this->cart_service->add_item_to_cart($product_id, $quantity, $cart_id);
+        $result = $this->cart_service->add_item_to_cart($product_id, $quantity, $user_id, $cart_id);
 
-        if (!$result) {
+        if ($result <= 0) {
             return response('Bad Request', 400);
         }
 
@@ -43,11 +43,12 @@ class CartController extends Controller
         $item_id = $request->input('item_id');
         $quantity = $request->input('quantity');
 
-        $item = Item::find($item_id);
-        $item->quantity = $quantity;
-        $item->save();
+        $result = $this->cart_service->update_item_quantity($item_id, $quantity);
+        if (!$result) {
+            return response('Bad Request', 400);
+        }
 
-        return true;
+        return response($result, 200);
     }
 
     public function destroy(Request $request)

@@ -9,16 +9,7 @@ use Illuminate\Support\Collection;
 
 class CartService
 {
-    private EmailService $email_service;
-    private UserService $user_service;
-
-    public function __construct(EmailService $email_service, UserService $user_service)
-    {
-        $this->email_service = $email_service;
-        $this->user_service = $user_service;
-    }
-
-    public function add_item_to_cart(int $product_id, int $quantity, int $cart_id = null): int
+    public function add_item_to_cart(int $product_id, int $quantity, int $user_id, int $cart_id = null): int
     {
         if (!$product_id || !$quantity) {
             return -1;
@@ -26,7 +17,7 @@ class CartService
 
         if (!$cart_id) {
             $cart = new Cart;
-            $cart->user_id = 1;
+            $cart->user_id = $user_id;
             $cart->save();
 
             $cart_id = $cart->id;
@@ -45,7 +36,7 @@ class CartService
         return $item->id;
     }
 
-    public function get_items_from_cart(int $cart_id): Collection
+    public function get_items_from_cart(int $cart_id)
     {
         if (!$cart_id) {
             return Collection::empty();
@@ -88,6 +79,19 @@ class CartService
             $cart = Cart::find($cart_id);
             $cart->delete();
         }
+
+        return true;
+    }
+
+    public function update_item_quantity(int $item_id, int $new_quantity): bool
+    {
+        if (!$item_id || !$new_quantity) {
+            return false;
+        }
+
+        $item = Item::find($item_id);
+        $item->quantity = $new_quantity;
+        $item->save();
 
         return true;
     }
