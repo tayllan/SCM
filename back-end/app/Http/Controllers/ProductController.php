@@ -2,31 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
-    public function index(): array
+    private $product_service;
+
+    public function __construct(ProductService $product_service)
     {
-        $products = Product::join('brands', 'products.brand_id', '=', 'brands.id')
-            ->get(['products.id', 'products.product_name', 'products.product_flavor', 'brands.brand_name', 'brands.brand_logo_path']);
-
-        $resources = [];
-        foreach ($products as $product) {
-            $resources[] = new ProductResource($product);
-        }
-
-        return $resources;
+        $this->product_service = $product_service;
     }
 
-    public function show(int $id): ProductResource
+    public function index()
     {
-        $product = Product::join('brands', 'products.brand_id', '=', 'brands.id')
-            ->where('products.id', '=', $id)
-            ->get(['products.id', 'products.product_name', 'products.product_flavor', 'brands.brand_name', 'brands.brand_logo_path'])
-            ->firstOrFail();
+        return $this->product_service->get_products();
+    }
 
-        return new ProductResource($product);
+    public function show(int $product_id)
+    {
+        return $this->product_service->get_product($product_id);
     }
 }
