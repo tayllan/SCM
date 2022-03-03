@@ -33,7 +33,7 @@ class CartService
         $item_cart->cart_id = $cart_id;
         $item_cart->save();
 
-        return $item->id;
+        return $cart_id;
     }
 
     public function get_items_from_cart(int $cart_id)
