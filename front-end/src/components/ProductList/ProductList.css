@@ -1,0 +1,14 @@
+.Products {
+    display: grid;
+    margin-top: 5%;
+    margin-left: 15%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.Product {
+    height: 250px;
+    width: 250px;
+    border: solid 1px;
+}

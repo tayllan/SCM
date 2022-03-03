@@ -1,0 +1,8 @@
+.CartTopBar {
+    float: right;
+    margin-right: 50px;
+
+    border: 2px solid red;
+    border-radius: 100px;
+    padding: 5px;
+}

@@ -1,0 +1,16 @@
+.Items {
+    margin-top: 5%;
+    margin-left: 15%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.Items button {
+    margin-bottom: 50px;
+}
+
+.Item {
+    height: 150px;
+    width: 150px;
+}
